@@ -24,6 +24,7 @@ class Player < ApplicationRecord
             item = array
         end
 
+
         player_name_array = []
         array4.each do |player|
             player = 'https://www.baseball-reference.com'.concat(player)
@@ -46,14 +47,13 @@ class Player < ApplicationRecord
                     pitching_saves = player_secondary_stats.split("Saves")[1].split("<p>")[1][0..-20]
                 elsif primary_player_type_indicator.include?("At Bats")
                     player_type = "Hitter"
+                    hitter_total_at_bats = player_main_stats.split('h4 class="poptip"')[2].split("data-tip")[1].split("h4>")[1].split("</div>")[0][4..-6]
                     hitter_total_hits = player_main_stats.split('Hits')[2].split("div")[0][20..-8]
                     hitter_total_batting_average = player_main_stats.split('Hits')[3].split('>BA</h4>')[1][4..-20]
                     hitter_total_homers = player_main_stats.split('Hits')[2].split('HR')[1].split('</div>')[0][9..-6]
                     hitter_total_runs = player_secondary_stats.split("Runs Scored")[1].split('</div>')[0].split('<p>')[1][0..-6]
                     hitter_total_rbi = player_secondary_stats.split("Runs Scored")[1].split('</div>')[1].split('RBI')[1][9..-6]
-                    hitter_total_stolen_bases = player_secondary_stats.split("Runs Scored")[1].split('</div>')[2].split('SB')[1][9..-6]
-                    puts hitter_total_stolen_bases
-                end
+                    hitter_total_stolen_bases = player_secondary_stats.split("Runs Scored")[1].split('</div>')[2].split('SB')[1][9..-6]                end
                 player_name = page.css("h1[itemprop='name']").to_s
                 player_image = page.css('img')[1].to_s.split('onerror')[0][10..-12]
                 new_player_name[player_name.split("<")[1].split(">")[1]] = each_player_hash
@@ -67,6 +67,7 @@ class Player < ApplicationRecord
                     each_player_hash["E.R.A."] = earned_run_average
                     each_player_hash["IP"] = innings_pitched
                     each_player_hash["saves"] = pitching_saves
+                    
                 elsif player_type == "Hitter"
                     each_player_hash["hits"] = hitter_total_hits
                     each_player_hash["avg"] = hitter_total_batting_average
@@ -74,6 +75,7 @@ class Player < ApplicationRecord
                     each_player_hash["runs"] = hitter_total_runs
                     each_player_hash["rbi"] = hitter_total_rbi
                     each_player_hash["sb"] = hitter_total_stolen_bases
+                    each_player_hash["at bats"] = hitter_total_at_bats
                 end
             end
                 player_name_array << new_player_name
