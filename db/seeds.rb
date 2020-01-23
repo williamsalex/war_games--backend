@@ -9,6 +9,7 @@
 user1 = User.create(username: "holder")
 deck1 = Deck.create(user: user1)
 
+deck2 = Deck.create(user: user1)
 Player.get_players_info.each do |player|
     begin
         name = player.keys[0]
@@ -30,7 +31,7 @@ Player.get_players_info.each do |player|
             rbi = player[name]["rbi"]
             sb = player[name]["sb"]
             at_bats = player[name]["at bats"]
-            new_player = Player.create(job: "hitter", name: name, war: war, image: image, hits: hits, avg: avg, hr: hr, runs: runs, rbi: rbi, stolen_bases: sb, at_bats: at_bats, deck_id: 1)
+            new_player = Player.create(job: "hitter", name: name, war: war, image: image, hits: hits, avg: avg, hr: hr, runs: runs, rbi: rbi, stolen_bases: sb, at_bats: at_bats, deck_id: 2)
         end
     rescue
         puts player

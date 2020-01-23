@@ -26,7 +26,7 @@ class Player < ApplicationRecord
 
 
         player_name_array = []
-        array4.each do |player|
+        array4[0...1].each do |player|
             player = 'https://www.baseball-reference.com'.concat(player)
             page = Nokogiri::HTML(RestClient.get(player, {}))
             war = page.to_s.split('Developed by Sean Smith of BaseballProjection.com">WAR</h4>')[1].split('<h4 class="poptip"')[0][4..-20]
@@ -53,10 +53,13 @@ class Player < ApplicationRecord
                     hitter_total_homers = player_main_stats.split('Hits')[2].split('HR')[1].split('</div>')[0][9..-6]
                     hitter_total_runs = player_secondary_stats.split("Runs Scored")[1].split('</div>')[0].split('<p>')[1][0..-6]
                     hitter_total_rbi = player_secondary_stats.split("Runs Scored")[1].split('</div>')[1].split('RBI')[1][9..-6]
-                    hitter_total_stolen_bases = player_secondary_stats.split("Runs Scored")[1].split('</div>')[2].split('SB')[1][9..-6]                end
+                    hitter_total_stolen_bases = player_secondary_stats.split("Runs Scored")[1].split('</div>')[2].split('SB')[1][9..-6] 
+                    hitter_offensive_war = page.css("tr[data-stat='WAR_off']")
+                    puts hitter_offensive_war
+                      end
                 player_name = page.css("h1[itemprop='name']").to_s
                 player_image = page.css('img')[1].to_s.split('onerror')[0][10..-12]
-                new_player_name[player_name.split("<")[1].split(">")[1]] = each_player_hash
+                new_player_name[player_name.split("<")[1].split(">")[2]] = each_player_hash
                 each_player_hash["player_type"] = player_type
                 each_player_hash["war"] = war
                 each_player_hash["image"] = player_image
