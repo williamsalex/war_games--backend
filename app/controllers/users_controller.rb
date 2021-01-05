@@ -14,4 +14,13 @@ class UsersController < ApplicationController
          render json: user
      end
 
+     def new
+        user = User.find_or_create_by(strong_params)
+     end
+
+     private
+    def strong_params
+        params.permit(:username)
+    end
+
 end
